@@ -8,17 +8,23 @@ Sentiment Analysis
 * Create file app.properties with credentials before executing with  following keys.
 
 CONSUMER_KEY=
+
 CONSUMER_SECRET=
+
 ACCESS_TOKEN=
+
 ACCESS_TOKEN_SECRET=
+
 MONGO=mongodb://
+
 
 * You don't need to specify the database name in the MONGO url. The application uses the database name "test" for now.
 
 * Go to the classifier_train directory and create the classifier.gob file as per the instructions in the README file. Copy the classifier.gob to the executable directory
 
-* After you have app.properties and classifier.gob ready. You can execute the application by running.
+* After you have app.properties and classifier.gob ready. You can execute the application by doing a 
 
+** cd runner
+** go run main.go
 
-Copy /bower_components/ and main.go outside tweetwords folder and run
-> go run main.go
+* Open a browser and point it to http://localhost:8080
