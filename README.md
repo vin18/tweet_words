@@ -24,7 +24,8 @@ MONGO=mongodb://
 
 * After you have app.properties and classifier.gob ready. You can execute the application by doing a 
 
-	cd runner
-	go run main.go
-
+```
+cd runner
+go run main.go
+```
 * Open a browser and point it to http://localhost:8080
