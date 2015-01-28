@@ -7,9 +7,10 @@
     <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
     <link rel="import" href="bower_components/core-icons/core-icons.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="bower_components/core-menu/core-menu.html">
     <link rel="import" href="bower_components/core-item/core-item.html">
-    <link rel="import" href="bower_components/paper-input/paper-input.html">
+
+    <link rel="import" href="elements/tw-menu.html">
+    <link rel="import" href="elements/tw-paper-input.html">
     
 
   </head>
@@ -32,7 +33,7 @@
         core-header-panel {
           background: white;
         }
-        core-menu {
+        tw-menu {
           float: left;
           display: block;
           margin: 12px;
@@ -44,37 +45,18 @@
     <core-toolbar id="mainheader">
       <span flex>Tweet Words</span>
     </core-toolbar>
-    <core-menu id="menu" selected="0">
+    <tw-menu id="menu" selected="0">
       {{range $i := .keywords}}
       <a href="/GetKeywordsServ?keyword={{html $i}}"><core-item  label="{{html $i}}"></core-item></a>
       {{end}}
-      <core-item icon="search" id='search'>
-        <form action="/storeKeyword">
-            <input type="text" name="keyword"/>
-            <input type="submit" value="Add"/><br/>
-        </form>
+      <core-item  id='search'>
+        <tw-paper-input label="Search"></tw-paper-input>
       </core-item>
-    </core-menu>
+    </tw-menu>
     <div style="float: left; width: 60%;">
     <p>Sample content.</p>
     <p>Sample content.</p>
     <div>
   </core-header-panel>
 </body>
-
-  <script>
-    window.addEventListener('polymer-ready', function(e) {
-      var menu = document.querySelector('core-menu');
-      menu.addEventListener("click", function(e){
-        var src = e.srcElement || e.target;
-        if ( src.tagName === 'CORE-ITEM' ) {
-          if ( src.id !== "search" ) {
-              console.log("NON SEARCH")
-          } else {
-            //search
-          }
-        }
-      });
-    });
-  </script>
 </html>
