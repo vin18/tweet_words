@@ -195,11 +195,8 @@ func ServeHome(w http.ResponseWriter, r *http.Request, cred *oauth.Credentials) 
 
 
 var (
-	HomeLoggedOutTmpl, _ = template.ParseFiles("tweet_words/index.html")
-
-	// HomeTmpl, _ = template.ParseFiles("tweet_words/mainPage.html")
-
-	HomeTmpl, _ = template.ParseFiles("tweet_words/mainPage1.html")
+	HomeLoggedOutTmpl, _ = template.ParseFiles("../index.html")
+	HomeTmpl, _ = template.ParseFiles("../mainPage.html")
 )
 
 func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
@@ -216,7 +213,7 @@ func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetKeywordsList() {
-	KeywordsArray["keywords"] = GetKeywords()
+	KeywordsArray["Keywords"] = GetKeywords()
 }
 
 func GetKeywordsServ(w http.ResponseWriter, r *http.Request) {

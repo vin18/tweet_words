@@ -19,7 +19,7 @@ var GUser User
 var KeywordsArray = make(map[string][]string)
 
 func StoreUser(user User) (ret bool) {
-		mgoSession, err := mgo.Dial("mongodb://54.188.201.254")
+		mgoSession, err := mgo.Dial(Conf["MONGO"])
 		if err != nil {
 			panic(err)
 		}
@@ -52,7 +52,7 @@ func StoreUser(user User) (ret bool) {
 }
 
 func StoreKeywords(data string) (ret bool) {
-	mgoSession, err := mgo.Dial("mongodb://54.188.201.254")
+	mgoSession, err := mgo.Dial(Conf["MONGO"])
 	if err != nil {
 		panic(err)
 	}
@@ -86,7 +86,7 @@ func StoreKeywords(data string) (ret bool) {
 }
 
 func GetKeywords() (ret []string) {
-	mgoSession, err := mgo.Dial("mongodb://54.188.201.254")
+	mgoSession, err := mgo.Dial(Conf["MONGO"])
 	if err != nil {
 		panic(err)
 	}
@@ -107,7 +107,7 @@ func GetKeywords() (ret []string) {
 }
 
 func GetTweets(keyValue string) (retValue []TweetStore){
-		mgoSession, err := mgo.Dial("mongodb://54.188.201.254")
+		mgoSession, err := mgo.Dial(Conf["MONGO"])
 	if err != nil {
 		panic(err)
 	}
