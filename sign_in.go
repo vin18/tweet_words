@@ -197,10 +197,9 @@ func ServeHome(w http.ResponseWriter, r *http.Request, cred *oauth.Credentials) 
 	}
 }
 
-
 var (
 	HomeLoggedOutTmpl, _ = template.ParseFiles("../index.html")
-	HomeTmpl, _ = template.ParseFiles("../mainPage.html")
+	HomeTmpl, _          = template.ParseFiles("../mainPage.html")
 )
 
 func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
@@ -208,15 +207,14 @@ func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 	StoreKeywords(keyValue["keyword"][0])
 	x := 10 * time.Minute
 	xyz := url.Values{}
-	xyz.Set("track",keyValue["keyword"][0])
-	xyz.Add("language","en")
+	xyz.Set("track", keyValue["keyword"][0])
+	xyz.Add("language", "en")
 	tweetChan := StoreTweets(xyz, x, keyValue["keyword"][0])
 	// TODO(vin18): Cannot register multiple handlers, so
-	// currently search can for single keyword before crashing  
+	// currently search can for single keyword before crashing
 	http.Handle("/events", &SSE{tweetInfoChan: tweetChan})
 	Respond(w, HomeTmpl, keyValue)
 }
-
 
 func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	f, ok := w.(http.Flusher)
@@ -251,6 +249,3 @@ func GetKeywordsServ(w http.ResponseWriter, r *http.Request) {
 	KeywordsArray1 := GetTweets(keyValue["keyword"][0])
 	Respond(w, HomeTmpl, KeywordsArray1)
 }
-
-
-
