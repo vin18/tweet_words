@@ -39,6 +39,12 @@
           margin: 12px;
           width: 25%;
         }
+        .Negative {
+          background-color:rgba(255,0,0,0.3);
+        }
+       .Positive {
+          background-color:rgba(0,255,0,0.3);
+        }
   </style>
   <body fullbleed vertical layout unresolved>
   <core-header-panel flex>
@@ -53,10 +59,23 @@
         <tw-paper-input label="Search"></tw-paper-input>
       </core-item>
     </tw-menu>
-    <div style="float: left; width: 60%;">
-    <p>Sample content.</p>
-    <p>Sample content.</p>
+    <div id="tweets" style="float: left; width: 60%;">
     <div>
   </core-header-panel>
+
+
+  <script type="text/javascript">
+      //Create a new HTML5 EventSource
+      var source = new EventSource('/events');
+      // Create a callback for when a new message is received.
+      source.onmessage = function(e) {
+        var tweetDiv = document.getElementById('tweets');
+        var tweet = document.createElement('p');
+        var sse = JSON.parse(e.data);
+        tweet.innerText = sse.text
+        tweet.classList.add(sse.class)
+        tweetDiv.appendChild(tweet)
+      };
+  </script>
 </body>
 </html>

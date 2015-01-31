@@ -64,8 +64,8 @@ func Tweets(query url.Values, timeout time.Duration, quit chan bool) <-chan anac
 	return tweetChan
 }
 
-func StoreTweets(query url.Values, timeout time.Duration, collectionName string) (retChan chan bool) {
-	retChan = make(chan bool)
+func StoreTweets(query url.Values, timeout time.Duration, collectionName string) (retChan chan string) {
+	retChan = make(chan string)
 	quit := make(chan bool)
 	tweetsChan := Tweets(query, timeout, quit)
 	go func() {
@@ -88,12 +88,16 @@ func StoreTweets(query url.Values, timeout time.Duration, collectionName string)
 				twitterUrl = fmt.Sprintf("https://www.twitter.com/%s/status/%s", tweet.User.ScreenName, tweet.IdStr)
 				tweet.Text = strings.Replace(tweet.Text, "\n", "", -1)
 				classification = ClassifyTweet(tweet.Text)
+
+				retText := fmt.Sprintf("{\"url\":\"%s\"  , \"text\":\"%s\" , \"class\":\"%s\"}", twitterUrl, tweet.Text, classification)
+				retChan <- retText
+
 				err = col.Insert(&TweetStore{twitterUrl, tweet.Text, classification})
 				if err != nil {
 					panic(err)
 				}
 			case <-quit:
-				retChan <- true
+				retChan <- "QUIT"
 				return
 			}
 		}

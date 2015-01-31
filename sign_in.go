@@ -32,6 +32,10 @@ var (
 
 var SigninOAuthClient oauth.Client
 
+type SSE struct {
+	tweetInfoChan chan string
+}
+
 // authHandler reads the auth cookie and invokes a handler with the result.
 type AuthHandler struct {
 	handler  func(w http.ResponseWriter, r *http.Request, c *oauth.Credentials)
@@ -206,10 +210,36 @@ func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 	xyz := url.Values{}
 	xyz.Set("track",keyValue["keyword"][0])
 	xyz.Add("language","en")
-	z:=StoreTweets(xyz, x, keyValue["keyword"][0])
-	go func() { <-z }()
-	GetKeywordsList()
+	tweetChan := StoreTweets(xyz, x, keyValue["keyword"][0])
+	// TODO(vin18): Cannot register multiple handlers, so
+	// currently search can for single keyword before crashing  
+	http.Handle("/events", &SSE{tweetInfoChan: tweetChan})
 	Respond(w, HomeTmpl, keyValue)
+}
+
+
+func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	f, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "Streaming unsupported!", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the headers related to event streaming.
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
+	for {
+
+		// Read from our messageChan.
+		msg := <-b.tweetInfoChan
+		fmt.Println(msg)
+
+		// Write to the ResponseWriter, `w`.
+		fmt.Fprintf(w, "data:%s\n\n", msg)
+		f.Flush()
+	}
 }
 
 func GetKeywordsList() {
@@ -221,3 +251,6 @@ func GetKeywordsServ(w http.ResponseWriter, r *http.Request) {
 	KeywordsArray1 := GetTweets(keyValue["keyword"][0])
 	Respond(w, HomeTmpl, KeywordsArray1)
 }
+
+
+
