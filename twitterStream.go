@@ -80,7 +80,7 @@ func StoreTweets(query url.Values, timeout time.Duration, collectionName string)
 			select {
 			case tweet := <-tweetsChan:
 				newSes := mgoSession.Copy()
-				defer newSes.Close()
+				
 				col := newSes.DB("test").C(collectionName)
 				if col == nil {
 					panic("unable to get collection")
@@ -93,6 +93,7 @@ func StoreTweets(query url.Values, timeout time.Duration, collectionName string)
 				retChan <- retText
 
 				err = col.Insert(&TweetStore{twitterUrl, tweet.Text, classification})
+				newSes.Close()
 				if err != nil {
 					panic(err)
 				}
