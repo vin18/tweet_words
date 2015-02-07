@@ -65,17 +65,42 @@
 
 
   <script type="text/javascript">
-      //Create a new HTML5 EventSource
-      var source = new EventSource('/events');
-      // Create a callback for when a new message is received.
-      source.onmessage = function(e) {
-        var tweetDiv = document.getElementById('tweets');
-        var tweet = document.createElement('p');
-        var sse = JSON.parse(e.data);
-        tweet.innerText = sse.text
-        tweet.classList.add(sse.class)
-        tweetDiv.appendChild(tweet)
-      };
+
+      function getQueryVariable(variable)
+      {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+          var pair = vars[i].split("=");
+          if(pair[0] == variable)
+            {
+              return pair[1];
+            }
+        }   
+        return(false);
+      }
+
+      streamUrl = getQueryVariable('keyword');
+      if(streamUrl)
+      {
+          streamUrl= streamUrl.replace('%20','+')
+
+          var source = new EventSource('/' + streamUrl);
+          // Create a callback for when a new message is received.
+          source.onmessage = function(e) {
+            var tweetDiv = document.getElementById('tweets');
+            var tweet = document.createElement('p');
+            var sse = JSON.parse(e.data);
+            tweet.innerText = sse.text
+            tweet.classList.add(sse.class)
+            tweetDiv.appendChild(tweet)
+          };
+          source.onerror = function(e) {
+            console.log(e)
+          };
+
+      }
+      
   </script>
 </body>
 </html>

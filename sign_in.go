@@ -210,9 +210,8 @@ func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 	xyz.Set("track", keyValue["keyword"][0])
 	xyz.Add("language", "en")
 	tweetChan := StoreTweets(xyz, x, keyValue["keyword"][0])
-	// TODO(vin18): Cannot register multiple handlers, so
-	// currently search can for single keyword before crashing
-	http.Handle("/events", &SSE{tweetInfoChan: tweetChan})
+
+	http.Handle("/"+url.QueryEscape(keyValue["keyword"][0]), &SSE{tweetInfoChan: tweetChan})
 	Respond(w, HomeTmpl, keyValue)
 }
 
