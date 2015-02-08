@@ -30,6 +30,11 @@ var (
 
 var SigninOAuthClient oauth.Client
 
+type templateData struct {
+	KeywordsSearched []string
+	DataStored []TweetStore
+}
+
 type SSE struct {
 	tweetInfoChan chan string
 }
@@ -173,7 +178,7 @@ func DecodeResponse(resp *http.Response, data interface{}) error {
 func Respond(w http.ResponseWriter, t *template.Template, data interface{}) {
 	fmt.Println("Respond")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := t.Execute(w, KeywordsArray); err != nil {
+	if err := t.Execute(w, data); err != nil {
 		log.Print(err)
 	}
 }
@@ -190,8 +195,8 @@ func ServeHome(w http.ResponseWriter, r *http.Request, cred *oauth.Credentials) 
 		user := User{cred.Token, cred.Secret, nil}
 		GUser = user
 		StoreUser(user)
-		GetKeywordsList()
-		Respond(w, HomeTmpl, KeywordsArray)
+		templData := GetKeywordsList()
+		Respond(w, HomeTmpl, templData)
 	}
 }
 
@@ -242,8 +247,8 @@ func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetKeywordsList() {
-	KeywordsArray["Keywords"] = GetKeywords()
+func GetKeywordsList() templateData {
+	return templateData{KeywordsSearched:GetKeywords()}
 }
 
 func GetKeywordsServ(w http.ResponseWriter, r *http.Request) {

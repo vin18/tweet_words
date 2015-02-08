@@ -28,9 +28,6 @@ func stringInSlice(a string, list []string) bool {
 	return false
 }
 
-//var KeywordsArray = []string{"test"}
-var KeywordsArray = make(map[string][]string)
-
 func StoreUser(user User) (ret bool) {
 	mgoSession, err := mgo.Dial(Conf["MONGO"])
 	if err != nil {

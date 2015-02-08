@@ -53,12 +53,14 @@
     </core-toolbar>
     <tw-menu id="menu" selected="0">
     <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
-      {{range $i := .keywords}}
-      <a href="/GetKeywordsServ?keyword={{html $i}}"><core-item  label="{{html $i}}"></core-item></a>
-      {{end}}
       <core-item  id='search'>
         <tw-paper-input label="Search"></tw-paper-input>
       </core-item>
+      {{range $i := .KeywordsSearched}}
+        <core-item
+          <a href="/GetKeywordsServ?keyword={{html $i}}"><core-item  label="{{html $i}}"></core-item></a>
+        </core-item>
+      {{end}}
     </tw-menu>
     <div id="tweets" style="float: left; width: 60%;">
     <div>
