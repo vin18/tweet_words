@@ -6,6 +6,7 @@
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
     <link rel="import" href="bower_components/core-icons/core-icons.html">
+    <link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="bower_components/core-item/core-item.html">
 
@@ -17,6 +18,7 @@
   <style>
         body {
           font-family: sans-serif;
+          flex-direction: row;
         }
         core-header-panel {
           background: white;
@@ -24,6 +26,7 @@
         core-toolbar {
           background-color: cadetblue;
           color: antiquewhite;
+          height: 144px;
         }
         p {
           margin: 20px;
@@ -38,7 +41,7 @@
           float: left;
           display: block;
           margin: 12px;
-          width: 20%;
+          width: 100%;
         }
         .keyword {
             background: whitesmoke;
@@ -56,27 +59,46 @@
        .Positive {
           background-color:rgba(0,255,0,0.3);
         }
-  </style>
-  <body fullbleed vertical layout unresolved>
-  <core-header-panel flex>
-    <core-toolbar id="mainheader">
-      <span flex>Tweet Words</span>
-    </core-toolbar>
-    <tw-menu id="menu" selected="0">
-    <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
-      <core-item  id='search'>
-        <tw-paper-input label="Search"></tw-paper-input>
-      </core-item>
-      {{range $i := .KeywordsSearched}}
-        <core-item class="keyword" label="{{html $i}}">
-           <a href="/GetKeywordsServ?keyword={{html $i}}"></a>
-        </core-item>
-      {{end}}
-    </tw-menu>
-    <div id="tweets" style="float: left; width: 60%;">
-    <div>
-  </core-header-panel>
 
+        #tweets {
+            margin: 64px 120px 60px 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+            border-radius: 2px;
+            float: left;
+            width: 90%;
+            min-height: 500px;
+        }
+
+  </style>
+  <body fullbleed vertical layout unresolved style="flex-direction: row;">
+  <core-drawer-panel drawerwidth="300px">
+      <core-header-panel drawer flex>
+        <core-toolbar id="mainheader">
+          <span flex style="margin-top: 12%; padding-left: 10px;">Tweet Words</span>
+        </core-toolbar>
+        <tw-menu id="menu" selected="0">
+        <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
+          <core-item  id='search'>
+            <tw-paper-input label="Search"></tw-paper-input>
+          </core-item>
+          {{range $i := .KeywordsSearched}}
+            <core-item class="keyword" label="{{html $i}}">
+               <a href="/GetKeywordsServ?keyword={{html $i}}"></a>
+            </core-item>
+          {{end}}
+        </tw-menu>
+      </core-header-panel>
+
+
+      <core-header-panel main shadow flex mode="cover">
+        <core-toolbar id="mainheader">
+        </core-toolbar>
+        <div id="tweets" >
+        <div>
+      </core-header-panel>
+
+  </core-drawer-panel>
 
   <!-- Support for web components technologies if not natively supported -->
   <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
