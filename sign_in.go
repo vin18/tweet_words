@@ -16,8 +16,6 @@ import (
 
 var HttpAddr = flag.String("addr", "localhost:8080", "HTTP server address")
 
-var Chttp = http.NewServeMux()
-
 var OauthClient = oauth.Client{
 	TemporaryCredentialRequestURI: "https://api.twitter.com/oauth/request_token",
 	ResourceOwnerAuthorizationURI: "https://api.twitter.com/oauth/authorize",
@@ -205,12 +203,18 @@ var (
 func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 	keyValue := r.URL.Query()
 	StoreKeywords(keyValue["keyword"][0])
+
+	// TODO (vin18) rename
 	x := 10 * time.Minute
 	xyz := url.Values{}
 	xyz.Set("track", keyValue["keyword"][0])
 	xyz.Add("language", "en")
 	tweetChan := StoreTweets(xyz, x, keyValue["keyword"][0])
 
+	// TODO (vin18) Currently, if same keyword is searched again
+	// a panic occurs as same handle cannot be registerd twice
+
+	// TODO (vin18) Add a mechanism to detect if any user is accepting events
 	http.Handle("/"+url.QueryEscape(keyValue["keyword"][0]), &SSE{tweetInfoChan: tweetChan})
 	Respond(w, HomeTmpl, keyValue)
 }
@@ -231,7 +235,6 @@ func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		// Read from our messageChan.
 		msg := <-b.tweetInfoChan
-		fmt.Println(msg)
 
 		// Write to the ResponseWriter, `w`.
 		fmt.Fprintf(w, "data:%s\n\n", msg)

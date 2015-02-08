@@ -52,6 +52,7 @@
       <span flex>Tweet Words</span>
     </core-toolbar>
     <tw-menu id="menu" selected="0">
+    <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
       {{range $i := .keywords}}
       <a href="/GetKeywordsServ?keyword={{html $i}}"><core-item  label="{{html $i}}"></core-item></a>
       {{end}}
