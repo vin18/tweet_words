@@ -77,7 +77,7 @@
           background-color: floralwhite;
         }
 
-        .logout {
+        #logout {
             margin-top: 10px;
             left: 475%;
             background: floralwhite;
@@ -94,7 +94,7 @@
             <tw-paper-input label="Search"></tw-paper-input>
           </core-item>
 
-        <paper-fab class="logout middle" icon="launch" role="button" tabindex="0" aria-label="launch">
+        <paper-fab id="logout" class="middle" icon="launch" role="button" tabindex="0" aria-label="launch">
         </paper-fab>
         </core-toolbar>
         <tw-menu id="menu">
@@ -169,7 +169,12 @@
           };
 
       }
-      
+
+      var logout = document.getElementById("logout");
+      logout.addEventListener('tap', function() {
+        window.location = "logout"
+      });
+
   </script>
 </body>
 </html>
