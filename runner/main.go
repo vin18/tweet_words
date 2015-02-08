@@ -13,6 +13,7 @@ func main() {
 
 	http.Handle("/bower_components/", http.StripPrefix("/bower_components/", http.FileServer(http.Dir("./bower_components/"))))
 	http.Handle("/elements/", http.StripPrefix("/elements/", http.FileServer(http.Dir("./elements/"))))
+	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./img/"))))
 
 	// Use a different auth URL for "Sign in with Twitter."
 	tweet_words.SigninOAuthClient = tweet_words.OauthClient
