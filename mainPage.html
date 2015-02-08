@@ -22,7 +22,8 @@
           background: white;
         }
         core-toolbar {
-          background-color: #03A9F4;
+          background-color: cadetblue;
+          color: antiquewhite;
         }
         p {
           margin: 20px;
@@ -37,7 +38,17 @@
           float: left;
           display: block;
           margin: 12px;
-          width: 25%;
+          width: 20%;
+        }
+        .keyword {
+            background: whitesmoke;
+            padding-left: 10px;
+            color: cadetblue;
+            margin-top: 5px;
+        }
+        .keyword:hover {
+            background: antiquewhite;
+            color: cornflowerblue;
         }
         .Negative {
           background-color:rgba(255,0,0,0.3);
@@ -57,8 +68,8 @@
         <tw-paper-input label="Search"></tw-paper-input>
       </core-item>
       {{range $i := .KeywordsSearched}}
-        <core-item
-          <a href="/GetKeywordsServ?keyword={{html $i}}"><core-item  label="{{html $i}}"></core-item></a>
+        <core-item class="keyword" label="{{html $i}}">
+           <a href="/GetKeywordsServ?keyword={{html $i}}"></a>
         </core-item>
       {{end}}
     </tw-menu>
