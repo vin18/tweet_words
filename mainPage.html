@@ -9,6 +9,7 @@
     <link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="bower_components/core-item/core-item.html">
+    <link rel="import" href="bower_components/paper-fab/paper-fab.html">
 
     <link rel="import" href="elements/tw-menu.html">
     <link rel="import" href="elements/tw-paper-input.html">
@@ -37,6 +38,9 @@
         core-header-panel {
           background: white;
         }
+        tw-paper-input {
+          color: cadetblue;
+        }
         tw-menu {
           float: left;
           display: block;
@@ -48,9 +52,10 @@
             padding-left: 10px;
             color: cadetblue;
             margin-top: 5px;
+            text-transform: capitalize;
         }
         .keyword:hover {
-            background: antiquewhite;
+            background: floralwhite;
         }
         .Negative {
           background-color: lemonchiffon;
@@ -72,6 +77,13 @@
           background-color: floralwhite;
         }
 
+        .logout {
+            margin-top: 10px;
+            left: 475%;
+            background: floralwhite;
+            color: cadetblue;
+        }
+
   </style>
   <body fullbleed vertical layout unresolved style="flex-direction: row;">
   <core-drawer-panel drawerwidth="300px">
@@ -81,8 +93,11 @@
           <core-item  id='search' class="bottom">
             <tw-paper-input label="Search"></tw-paper-input>
           </core-item>
+
+        <paper-fab class="logout middle" icon="launch" role="button" tabindex="0" aria-label="launch">
+        </paper-fab>
         </core-toolbar>
-        <tw-menu id="menu" selected="0">
+        <tw-menu id="menu">
         <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
 
           {{range $i := .KeywordsSearched}}
@@ -97,8 +112,19 @@
       <core-header-panel main shadow flex mode="cover">
         <core-toolbar id="mainheader">
         </core-toolbar>
-        <div id="tweets" >
-        <div>
+
+
+        <!-- for source events -->
+        <div id="tweets">
+
+            <!-- if is a GetKeywordsServ populate using fetched data -->
+            {{range $i := .DataStored}}
+              <p class="{{$i.Classification}}">
+                {{$i.Tweet}}
+              </p>
+            {{end}}
+
+        </div>
       </core-header-panel>
 
   </core-drawer-panel>

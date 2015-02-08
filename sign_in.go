@@ -32,7 +32,7 @@ var SigninOAuthClient oauth.Client
 
 type templateData struct {
 	KeywordsSearched []string
-	DataStored []TweetStore
+	DataStored       []TweetStore
 }
 
 type SSE struct {
@@ -250,11 +250,13 @@ func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetKeywordsList() templateData {
-	return templateData{KeywordsSearched:GetKeywords()}
+	return templateData{KeywordsSearched: GetKeywords()}
 }
 
 func GetKeywordsServ(w http.ResponseWriter, r *http.Request) {
 	keyValue := r.URL.Query()
-	KeywordsArray1 := GetTweets(keyValue["keyword"][0])
-	Respond(w, HomeTmpl, KeywordsArray1)
+	templData := GetKeywordsList()
+	tweets := GetTweets(keyValue["keyword"][0])
+	templData.DataStored = tweets
+	Respond(w, HomeTmpl, templData)
 }
