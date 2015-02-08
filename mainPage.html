@@ -51,7 +51,6 @@
         }
         .keyword:hover {
             background: antiquewhite;
-            color: cornflowerblue;
         }
         .Negative {
           background-color: lemonchiffon;
@@ -69,19 +68,23 @@
             width: 90%;
             min-height: 500px;
         }
+        core-toolbar /deep/ #bottomBar {
+          background-color: floralwhite;
+        }
 
   </style>
   <body fullbleed vertical layout unresolved style="flex-direction: row;">
   <core-drawer-panel drawerwidth="300px">
       <core-header-panel drawer flex>
         <core-toolbar id="mainheader">
-          <span flex style="margin-top: 12%; padding-left: 10px;">Tweet Words</span>
+          <span flex style="margin-top: 12%;">Tweet Words</span>
+          <core-item  id='search' class="bottom">
+            <tw-paper-input label="Search"></tw-paper-input>
+          </core-item>
         </core-toolbar>
         <tw-menu id="menu" selected="0">
         <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
-          <core-item  id='search'>
-            <tw-paper-input label="Search"></tw-paper-input>
-          </core-item>
+
           {{range $i := .KeywordsSearched}}
             <core-item class="keyword" label="{{html $i}}">
                <a href="/GetKeywordsServ?keyword={{html $i}}"></a>
