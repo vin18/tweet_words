@@ -220,8 +220,10 @@ func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 	// a panic occurs as same handle cannot be registerd twice
 
 	// TODO (vin18) Add a mechanism to detect if any user is accepting events
+
+	templData := GetKeywordsList()
 	http.Handle("/"+url.QueryEscape(keyValue["keyword"][0]), &SSE{tweetInfoChan: tweetChan})
-	Respond(w, HomeTmpl, keyValue)
+	Respond(w, HomeTmpl, templData)
 }
 
 func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
