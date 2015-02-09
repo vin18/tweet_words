@@ -193,9 +193,8 @@ func ServeHome(w http.ResponseWriter, r *http.Request, cred *oauth.Credentials) 
 		Respond(w, HomeLoggedOutTmpl, "loggedout")
 	} else {
 		user := User{cred.Token, cred.Secret, nil}
-		GUser = user
 		StoreUser(user)
-		templData := GetKeywordsList()
+		templData := GetKeywordsList(user)
 		Respond(w, HomeTmpl, templData)
 	}
 }
@@ -206,8 +205,14 @@ var (
 )
 
 func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
+
 	keyValue := r.URL.Query()
-	StoreKeywords(keyValue["keyword"][0])
+
+	c, _ := r.Cookie("auth")
+	cred := GetCredentials(c.Value)
+	user := User{cred.Token, cred.Secret, nil}
+
+	StoreKeywords(keyValue["keyword"][0], user)
 
 	// TODO (vin18) rename
 	x := 10 * time.Minute
@@ -221,7 +226,7 @@ func StoreKeywordServ(w http.ResponseWriter, r *http.Request) {
 
 	// TODO (vin18) Add a mechanism to detect if any user is accepting events
 
-	templData := GetKeywordsList()
+	templData := GetKeywordsList(user)
 	http.Handle("/"+url.QueryEscape(keyValue["keyword"][0]), &SSE{tweetInfoChan: tweetChan})
 	Respond(w, HomeTmpl, templData)
 }
@@ -249,13 +254,18 @@ func (b *SSE) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetKeywordsList() templateData {
-	return templateData{KeywordsSearched: GetKeywords()}
+func GetKeywordsList(user User) templateData {
+	return templateData{KeywordsSearched: GetKeywords(user)}
 }
 
 func GetKeywordsServ(w http.ResponseWriter, r *http.Request) {
+
+	c, _ := r.Cookie("auth")
+	cred := GetCredentials(c.Value)
+	user := User{cred.Token, cred.Secret, nil}
+
 	keyValue := r.URL.Query()
-	templData := GetKeywordsList()
+	templData := GetKeywordsList(user)
 	tweets := GetTweets(keyValue["keyword"][0])
 	templData.DataStored = tweets
 	Respond(w, HomeTmpl, templData)

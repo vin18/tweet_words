@@ -14,11 +14,6 @@ type User struct {
 	Keywords []string
 }
 
-// TODO (vin18) Currently only one global user is tracked
-// i.e the last logged in user.
-// Remove dependency on GUser
-var GUser User
-
 func stringInSlice(a string, list []string) bool {
 	for _, b := range list {
 		if b == a {
@@ -61,7 +56,7 @@ func StoreUser(user User) (ret bool) {
 	return
 }
 
-func StoreKeywords(data string) (ret bool) {
+func StoreKeywords(data string, user User) (ret bool) {
 	//convert to lower case
 	data = strings.ToLower(data)
 
@@ -78,7 +73,7 @@ func StoreKeywords(data string) (ret bool) {
 		panic("unable to get collection")
 	}
 	result := User{}
-	err = col.Find(bson.M{"token": GUser.Token}).One(&result)
+	err = col.Find(bson.M{"token": user.Token}).One(&result)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,7 +84,7 @@ func StoreKeywords(data string) (ret bool) {
 		words := make([]string, n+1)
 		copy(words, result.Keywords[0:])
 		words[n] = data
-		_, err = col.Upsert(bson.M{"token": GUser.Token, "secret": GUser.Secret}, bson.M{"$set": bson.M{"keywords": words}})
+		_, err = col.Upsert(bson.M{"token": user.Token, "secret": user.Secret}, bson.M{"$set": bson.M{"keywords": words}})
 	}
 
 	if err != nil {
@@ -97,14 +92,14 @@ func StoreKeywords(data string) (ret bool) {
 	}
 
 	result1 := User{}
-	err = col.Find(bson.M{"token": GUser.Token}).One(&result1)
+	err = col.Find(bson.M{"token": user.Token}).One(&result1)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return
 }
 
-func GetKeywords() (ret []string) {
+func GetKeywords(user User) (ret []string) {
 	mgoSession, err := mgo.Dial(Conf["MONGO"])
 	if err != nil {
 		panic(err)
@@ -118,7 +113,7 @@ func GetKeywords() (ret []string) {
 		panic("unable to get collection")
 	}
 	result := User{}
-	err = col.Find(bson.M{"token": GUser.Token}).One(&result)
+	err = col.Find(bson.M{"token": user.Token}).One(&result)
 	if err != nil {
 		log.Fatal(err)
 	}
