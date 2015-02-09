@@ -12,6 +12,16 @@
   <script>
     Polymer({
 
+    	domReady: function() {
+	    	  //find in the menu
+	          var menu = document.getElementById('menu');
+	          var selectItem = menu.querySelector('core-item[label="'+ keyword +'"]')
+	          if(selectItem) {
+	            var index = Array.prototype.indexOf.call(menu.children, selectItem);
+	            menu.selectIndex(index)
+	          }
+    	}
+
     });
   </script>
 </polymer-element>

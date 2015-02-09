@@ -57,7 +57,6 @@
             text-transform: capitalize;
             width: 90%;
             box-shadow: 4px 4px 30px grey;
-            /*box-shadow: inset 5px 5px 20px darkgray;*/
         }
         .keyword:hover {
             background: floralwhite;
@@ -88,6 +87,10 @@
             left: 93%;
             background: floralwhite;
             color: cadetblue;
+        }
+        core-item.core-selected {
+            color: red;
+            box-shadow: inset 5px 5px 20px darkgray;
         }
 
   </style>
@@ -157,6 +160,7 @@
       streamUrl = getQueryVariable('keyword');
       if(streamUrl)
       {
+          var keyword = decodeURIComponent(streamUrl)
           streamUrl= streamUrl.replace('%20','+')
 
           var source = new EventSource('/' + streamUrl);
