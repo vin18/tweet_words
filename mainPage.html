@@ -16,7 +16,8 @@
     
 
   </head>
-  <style>
+  <!-- The shim-shadowdom attribute instructs Polymer to shim the styles inside -->
+  <style  shim-shadowdom>
         body {
           font-family: sans-serif;
           flex-direction: row;
@@ -79,9 +80,12 @@
 
         #logout {
             margin-top: 10px;
-            left: 475%;
+            left: 93%;
             background: floralwhite;
             color: cadetblue;
+        }
+        #tweetsHeader {
+          pointer-events: none
         }
 
   </style>
@@ -93,9 +97,6 @@
           <core-item  id='search' class="bottom">
             <tw-paper-input label="Search"></tw-paper-input>
           </core-item>
-
-        <paper-fab id="logout" class="middle" icon="launch" role="button" tabindex="0" aria-label="launch">
-        </paper-fab>
         </core-toolbar>
         <tw-menu id="menu">
         <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
@@ -109,8 +110,10 @@
       </core-header-panel>
 
 
-      <core-header-panel main shadow flex mode="cover">
-        <core-toolbar id="mainheader">
+      <core-header-panel main shadow flex mode="cover" id="tweetsHeader">
+        <core-toolbar >
+            <paper-fab id="logout" class="middle" icon="launch" role="button" tabindex="0" aria-label="launch">
+            </paper-fab>
         </core-toolbar>
 
 
@@ -174,6 +177,7 @@
       logout.addEventListener('tap', function() {
         window.location = "logout"
       });
+
 
   </script>
 </body>
