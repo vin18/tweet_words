@@ -38,10 +38,8 @@ func init() {
 }
 
 func Tweets(query url.Values, timeout time.Duration, quit chan bool) <-chan anaconda.Tweet {
-	stream, err := TwitterApi.UserStream(query) //PublicStreamFilter ?
-	if err != nil {
-		panic(err)
-	}
+	stream := TwitterApi.UserStream(query) //PublicStreamFilter ?
+
 	var tweet anaconda.Tweet
 	var junk interface{}
 	tweetChan := make(chan anaconda.Tweet, 1024) // as much as I like the consumer routine...
@@ -80,7 +78,7 @@ func StoreTweets(query url.Values, timeout time.Duration, collectionName string)
 			select {
 			case tweet := <-tweetsChan:
 				newSes := mgoSession.Copy()
-				
+
 				col := newSes.DB("test").C(collectionName)
 				if col == nil {
 					panic("unable to get collection")
