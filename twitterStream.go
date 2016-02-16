@@ -38,7 +38,7 @@ func init() {
 }
 
 func Tweets(query url.Values, timeout time.Duration, quit chan bool) <-chan anaconda.Tweet {
-	stream := TwitterApi.UserStream(query) //PublicStreamFilter ?
+	stream, _ := TwitterApi.UserStream(query) //PublicStreamFilter ?
 
 	var tweet anaconda.Tweet
 	var junk interface{}

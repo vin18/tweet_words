@@ -1,0 +1,25 @@
+{
+  "name": "runner",
+  "homepage": "https://github.com/mukundmr/tweet_words",
+  "authors": [
+    "Vinaya Mandke <vinaya.mandke@synerzip.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "iron-behaviors": "PolymerElements/iron-behaviors#1.0.8",
+    "paper-elements": "PolymerElements/paper-elements#~1.0.1",
+    "iron-elements": "PolymerElements/iron-elements#~1.0.1"
+  }
+}

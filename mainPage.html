@@ -2,31 +2,30 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Tweet Words</title>
     <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-    <link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
-    <link rel="import" href="bower_components/core-icons/core-icons.html">
-    <link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
-    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-    <link rel="import" href="bower_components/core-item/core-item.html">
+    <title>Tweet Words</title>
+    <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/paper-drawer-panel/paper-drawer-panel.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
     <link rel="import" href="bower_components/paper-fab/paper-fab.html">
 
-    <link rel="import" href="elements/tw-menu.html">
-    <link rel="import" href="elements/tw-paper-input.html">
+    <!-- <link rel="import" href="elements/tw-menu.html">
+    <link rel="import" href="elements/tw-paper-input.html"> -->
     
 
   </head>
-  <!-- The shim-shadowdom attribute instructs Polymer to shim the styles inside -->
-  <style  shim-shadowdom>
+  <style>
         body {
           font-family: fantasy;
           flex-direction: row;
         }
-        core-header-panel {
+        paper-header-panel {
           background: white;
         }
-        core-toolbar {
+        paper-toolbar {
           background-color: cadetblue;
           color: antiquewhite;
           height: 144px;
@@ -38,7 +37,7 @@
           border-radius: 20px;
           background-color: #eee;
         }
-        core-header-panel {
+        paper-header-panel {
           background: white;
         }
         tw-paper-input {
@@ -79,9 +78,7 @@
             width: 90%;
             min-height: 500px;
         }
-        core-toolbar /deep/ #bottomBar {
-          background-color: floralwhite;
-        }
+        
 
         #logout {
             z-index: 10;
@@ -90,40 +87,45 @@
             background: floralwhite;
             color: cadetblue;
         }
-        core-item.core-selected {
+        paper-item.core-selected {
             color: red;
             box-shadow: inset 5px 5px 20px darkgray;
         }
 
   </style>
-  <body fullbleed vertical layout unresolved style="flex-direction: row;">
-  <core-drawer-panel drawerwidth="300px">
-      <core-header-panel drawer flex>
-        <core-toolbar id="mainheader">
-          <span flex style="margin-top: 12%; ">Tweet Words</span>
-          <core-item  id='search' class="bottom">
-            <tw-paper-input label="Search"></tw-paper-input>
-          </core-item>
-        </core-toolbar>
-        <tw-menu id="menu">
+  <body fullbleed vertical layout>
+
+    <paper-drawer-panel>
+      <paper-header-panel drawer>
+        <paper-toolbar>
+          <div class="top">
+              <span>TWEET WORDS </span>
+         
+          </div>
+        </paper-toolbar>
+
+        <!-- <tw-menu id="menu"> -->
         <!-- TODO (vin18) Correct this; currently nothing is displayed  -->
 
           {{range $i := .KeywordsSearched}}
-            <core-item class="keyword" label="{{html $i}}">
-               <a href="/GetKeywordsServ?keyword={{html $i}}"></a>
-            </core-item>
+            <paper-item class="keyword">
+               {{html $i}}
+               <a href="/GetKeywordsServ?keyword={{html $i}}" style="height: 100%;width: 100%; position: absolute; left: 0; top: 0;"></a>
+            </paper-item>
           {{end}}
-        </tw-menu>
+        <!-- </tw-menu> -->
+
       </core-header-panel>
-
-
-      <core-header-panel main shadow flex mode="cover" id="tweetsHeader">
-        <core-toolbar >
+        <div> Drawer content... </div>
+      </paper-header-panel>
+      <paper-header-panel main>
+        <paper-toolbar> 
+            <input id="toAdd" type="text" style="border-radius: 20px; height: 50%"/>
+            <paper-fab mini id="add" icon="add"></paper-fab>
             <paper-fab id="logout" class="middle" icon="launch" role="button" tabindex="0" aria-label="launch">
             </paper-fab>
-        </core-toolbar>
-
-
+        </paper-toolbar>
+        
         <!-- for source events -->
         <div id="tweets">
 
@@ -135,9 +137,12 @@
             {{end}}
 
         </div>
-      </core-header-panel>
 
-  </core-drawer-panel>
+
+
+      </paper-header-panel>
+    </paper-drawer-panel>
+
 
   <!-- Support for web components technologies if not natively supported -->
   <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
@@ -180,6 +185,13 @@
           };
 
       }
+
+      var add = document.getElementById("add");
+      var toAdd = document.getElementById("toAdd");
+      add.addEventListener('tap', function() {
+        debugger
+        window.location = "storeKeyword?keyword=" + toAdd.value;
+      });
 
       var logout = document.getElementById("logout");
       logout.addEventListener('tap', function() {
