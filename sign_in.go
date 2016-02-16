@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-var HttpAddr = flag.String("addr", "localhost:8080", "HTTP server address")
+var HttpAddr = flag.String("addr", "0.0.0.0:8080", "HTTP server address")
 
 var OauthClient = oauth.Client{
 	TemporaryCredentialRequestURI: "https://api.twitter.com/oauth/request_token",
