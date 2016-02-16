@@ -1,7 +1,7 @@
 package main
 
 import (
-		"github.com/mukundmr/tweet_words"
+		"github.com/vin18/tweet_words"
 		"net/http"
 		"flag"
 		"log"
